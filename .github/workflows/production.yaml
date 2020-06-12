@@ -43,6 +43,10 @@ jobs:
           cd back/functions
           npm install
       - run: |
-          ls -R
+          ls  
+          ls front
+          ls front/build
+          ls back/hosted/
+          ls back/hosted/build
           cd back
           firebase deploy --token "$FIREBASE_TOKEN"
