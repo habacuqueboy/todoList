@@ -22,7 +22,7 @@ jobs:
           yarn build
       - uses: actions/upload-artifact@v1
         with:
-          name: front
+          name: build
           path: front/build
           
 
@@ -36,11 +36,13 @@ jobs:
       - uses: actions/setup-node@v1
       - uses: actions/download-artifact@v1
         with:
-          name: front
+          name: build
+          path: front/
       - run: npm i -g firebase-tools
       - run: | 
           cd back/functions
           npm install
       - run: |
+          ls -R
           cd back
           firebase deploy --token "$FIREBASE_TOKEN"
