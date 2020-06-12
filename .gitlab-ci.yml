@@ -12,10 +12,9 @@ build-production:
     paths:
       - front/build
   script:
-    - npm install -g yarn
-    - yarn install
     - cd front
-    - CI=false yarn build
+    - yarn install
+    - yarn build
 
 deploy-production:
   stage: deploy
