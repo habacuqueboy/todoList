@@ -22,5 +22,7 @@ deploy-production:
     - master
   script:
     - npm i -g firebase-tools
-    - cd back 
+    - cd back/functions
+    - npm install
+    - cd ..
     - firebase deploy --token $FIREBASE_TOKEN
