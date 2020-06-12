@@ -22,7 +22,7 @@ jobs:
           yarn build
       - uses: actions/upload-artifact@v1
         with:
-          name: front/build
+          name: front
           path: front/build
           
 
@@ -36,7 +36,7 @@ jobs:
       - uses: actions/setup-node@v1
       - uses: actions/download-artifact@v1
         with:
-          name: front/build
+          name: front
       - run: npm i -g firebase-tools
       - run: | 
           cd back/functions
