@@ -14,22 +14,27 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      shell: bash
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - run: cd front
-      - run: yarn install
-      - run: yarn build
+      - run: |
+          cd front
+          yarn install
+          yarn build
 
   deploy:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      shell: bash
+      env:
+        FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
       - run: npm i -g firebase-tools
-      - run: cd back/functions
-      - run: npm install
-      - run: cd ..
-      - run: firebase deploy --token "$FIREBASE_TOKEN"
-        env:
-          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+      - run: | 
+          cd back/functions
+          npm install
+      - run: |
+          cd back
+          firebase deploy --token "$FIREBASE_TOKEN"
