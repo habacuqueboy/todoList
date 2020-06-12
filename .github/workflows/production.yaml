@@ -5,11 +5,14 @@ on:
     branches:
       - master
 
+defaults:
+  run:
+    shell: bash
+
 jobs:
 
   build:
     runs-on: ubuntu-latest
-    shell: bash
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -19,11 +22,7 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
-    shell: bash
     needs: build
-    steps:
-    env:
-      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -32,3 +31,5 @@ jobs:
       - run: npm install
       - run: cd ..
       - run: firebase deploy --token "$FIREBASE_TOKEN"
+        env:
+          FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
