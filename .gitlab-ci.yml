@@ -1,0 +1,27 @@
+image: "node:latest"
+
+stages:
+  - build
+  -deploy
+
+build-production:
+  stage: build
+  only:
+    - master
+  artifacts:
+    paths:
+      - front/build
+  script:
+    - npm install -g yarn
+    - yarn install
+    - cd front
+    - CI=false yarn build
+
+deploy-production:
+  stage: deploy
+  only:
+    - master
+  script:
+    - npm i -g firebase-tools
+    - cd back 
+    - firebase deploy --token $FIREBASE_TOKEN
