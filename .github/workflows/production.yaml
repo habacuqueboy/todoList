@@ -16,11 +16,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - shell: bash
-        run: |
-          cd front
-          yarn install
-          yarn build
+      - run: |
+        cd front
+        yarn install
+        yarn build
 
   deploy:
     runs-on: ubuntu-latest
@@ -30,11 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
-      - shell: bash
-        run: npm i -g firebase-tools
-        run: | 
-          cd back/functions
-          npm install
-        run: |
-          cd back
-          firebase deploy --token "$FIREBASE_TOKEN"
+      - run: npm i -g firebase-tools
+      - run: | 
+        cd back/functions
+        npm install
+      - run: |
+        cd back
+        firebase deploy --token "$FIREBASE_TOKEN"
