@@ -13,9 +13,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - cd front
-      - yarn install
-      - yarn build
+      - run: cd front
+      - run: yarn install
+      - run: yarn build
 
   deploy:
     runs-on: ubuntu-latest
@@ -27,8 +27,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
-      - npm i -g firebase-tools
-      - cd back/functions
-      - npm install
-      - cd ..
-      - firebase deploy --token "$FIREBASE_TOKEN"
+      - run: npm i -g firebase-tools
+      - run: cd back/functions
+      - run: npm install
+      - run: cd ..
+      - run: firebase deploy --token "$FIREBASE_TOKEN"
