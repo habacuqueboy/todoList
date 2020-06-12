@@ -1,0 +1,33 @@
+name: production
+
+on:
+  push:
+    branches:
+      - master
+
+defaults:
+  runs-on: ubuntu-latest
+  shell: bash
+
+jobs:
+
+  build:
+    steps:
+    uses: actions/checkout@v2
+    uses: actions/setup-node@v2
+      - cd front
+      - yarn install
+      - yarn build
+
+  deploy:
+    needs: build
+    env:
+      FIREBASE_TOKEN: ${{ secrets.FIREBASE_TOKEN }}
+    steps:
+    uses: actions/checkout@v2
+    uses: actions/setup-node@v2
+      - npm i -g firebase-tools
+      - cd back/functions
+      - npm install
+      - cd ..
+      - firebase deploy --token "$FIREBASE_TOKEN"
