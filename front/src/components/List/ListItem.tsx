@@ -11,12 +11,13 @@ export type ListItemType = {
     tags?: string[]
 }
 
-type Props = ListItemType & { onDelete: Function , onTagDelete: Function }
+type Props = ListItemType & { onDelete: Function , onChange: Function , onTagDelete: Function }
     
-export const ListItem = ({title,dsc,id,due,tags,onDelete,onTagDelete}:Props) => {
+export const ListItem = ({title,dsc,id,due,tags,onDelete,onChange,onTagDelete}:Props) => {
     const fim = due?.toLocaleDateString('pt-BR')
     return <div style={ListItemStyles.container}>
         <header style={ListItemStyles.header}>
+            <button style={ListItemStyles.editButton} onClick={onChange(id)}>Edit</button>
             <div style={ListItemStyles.title}>{title} </div>
             <button style={ListItemStyles.closeButton} onClick={onDelete(id)}>X</button>
         </header>

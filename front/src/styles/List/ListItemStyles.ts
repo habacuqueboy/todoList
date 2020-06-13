@@ -12,6 +12,11 @@ export const ListItemStyles = {
     title: {
         fontWeight: 'bold' as 'bold',
     },
+    editButton: {
+        padding: 0,
+        position: 'absolute' as 'absolute',
+        left: 0,
+    },
     closeButton: {
         padding: 0,
         position: 'absolute' as 'absolute',

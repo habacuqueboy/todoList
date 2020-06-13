@@ -41,15 +41,14 @@ export const useList = () => {
             e.preventDefault()
             if( form.title && form.dsc ) {
                 setUnfilteredItems( (oldItems) => {
-                   let newItem: ListItemType
                    let newItems: ListItemType[]
                    if(!isEditing) { newItems = [ ...oldItems , {...form,id: Date.now() } ] } 
                    else {
                        const oldIndex = oldItems.findIndex( (item) => item.id === form.id)
-                       newItem = {...form}
-                       newItems = [ ...oldItems.slice(0,oldIndex) , newItem , ...oldItems.slice(oldIndex+1) ]
+                       newItems = [ ...oldItems.slice(0,oldIndex) , {...form} , ...oldItems.slice(oldIndex+1) ]
                    }
                    setForm(initialForm)
+                   setIsEditing(false)
                    localStorage.setItem('todos',JSON.stringify(newItems))
                    return newItems
                 })
@@ -97,6 +96,6 @@ export const useList = () => {
     }
 
 
-    return { items , form , onFormChange , onFormSubmit , filter , onFilterChange , onItemDelete , onTagDelete }
+    return { items , form , onFormChange , onFormSubmit , filter , onFilterChange , onItemDelete , onItemChange , onTagDelete }
 
 }
