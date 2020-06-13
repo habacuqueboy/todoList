@@ -1,10 +1,11 @@
-import {https} from 'firebase-functions'
 import {initializeApp} from 'firebase-admin'
+initializeApp()
+
+import {https} from 'firebase-functions'
 import * as express from 'express'
 
 import {Todos} from './routers/Todos' 
 
-initializeApp()
 const app = express()
 
 app.use(express.json())
