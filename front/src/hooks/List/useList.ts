@@ -9,6 +9,7 @@ export const useList = () => {
     const [unfilteredItems,setUnfilteredItems] = useState<ListItemType[]>([])
     const [filter,setFilter] = useState<string>('')
     const [form,setForm] = useState<ListItemType>(initialForm)
+    const [isEditing,setIsEditing] = useState(false)
 
     // get new todos
     useEffect( () => {
@@ -27,9 +28,10 @@ export const useList = () => {
         return (e: any) => {
             const { name , value } = e.target
             if(name === 'tags') {
-                setForm( form => ({ ...form , [name]: value.split(',') }) ) 
+                const newTags = value.split(',').map( (tag:string) => tag.trim() )
+                setForm( form => ({ ...form , [name]: newTags }) ) 
             } else {
-                setForm( form => ({...form,[name]: value}) ) 
+                setForm( form => ({...form,[name]: value.trim() }) ) 
             }
         }
     }
@@ -37,18 +39,40 @@ export const useList = () => {
     const onFormSubmit = () => {
         return (e:any) => {
             e.preventDefault()
-            setUnfilteredItems( (oldItems) => {
-               const newItems = [ ...oldItems , {...form,id: Date.now() } ] 
-               localStorage.setItem( 'todos' , JSON.stringify(newItems) )
-               setForm(initialForm)
-               return newItems
-            })
+            if( form.title && form.dsc ) {
+                setUnfilteredItems( (oldItems) => {
+                   let newItem: ListItemType
+                   let newItems: ListItemType[]
+                   if(!isEditing) { newItems = [ ...oldItems , {...form,id: Date.now() } ] } 
+                   else {
+                       const oldIndex = oldItems.findIndex( (item) => item.id === form.id)
+                       newItem = {...form}
+                       newItems = [ ...oldItems.slice(0,oldIndex) , newItem , ...oldItems.slice(oldIndex+1) ]
+                   }
+                   setForm(initialForm)
+                   localStorage.setItem('todos',JSON.stringify(newItems))
+                   return newItems
+                })
+            }
         }
     }
 
     const onItemDelete = (id: number) =>  {
         return () => {
-            setUnfilteredItems( (oldItems) => oldItems.filter( (item) => item.id !== id ) )
+            setUnfilteredItems( (oldItems) => {
+                const newItems = oldItems.filter( (item) => item.id !== id ) 
+                localStorage.setItem('todos',JSON.stringify(newItems))
+                return newItems
+            })
+        }
+    }
+
+    const onItemChange = (id: number) => {
+        return () => {
+            if(!isEditing) {
+                const oldItem = items.find( (item) => item.id === id)
+                if(oldItem) { setForm(oldItem) ; setIsEditing(true) }
+            }
         }
     }
 
